@@ -1,1 +1,1 @@
-Data structures templates for competitive programming
+Competitive programming notebook
