@@ -1,0 +1,1 @@
+#define delay(t) this_thread::sleep_for(std::chrono::seconds(t)) // Time delay
