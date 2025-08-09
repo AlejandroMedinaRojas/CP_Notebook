@@ -1,44 +1,31 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
+// Time complexity O(1)
+// Space complexity O(n)
+template<typename T>
 struct DSU {
 
-    vector<int> parents, ranges, connected_component_size;
-    int dsu_size, number_connected_components;
+    vector<T> dsu;
+    T n, numcomp;
 
-    DSU(int n): dsu_size(n){
-        number_connected_components = dsu_size;
-        parents.resize(n); ranges.resize(n); connected_component_size.resize(n);
-        for (int i = 0; i < n; ++i){
-            parents[i] = i;
-            ranges[i] = 0;
-            connected_component_size[i] = 1;
+    DSU(T n): n(n), numcomp(n), dsu(n, -1) {}
+
+    T Find(T v){
+        return dsu[v] < 0 ? v : dsu[v] = Find(dsu[v]);
+    }
+
+    void Union(T u, T v){
+        T u = Find(u), v = Find(v);
+        if (u != v){
+            --numcomp;
+            if (pars[u] > pars[v]) swap(u, v);
+            pars[u] += pars[v];
+            pars[v] = u;
         }
     }
 
-    void Union(int u, int v){
-        int parent1 = Find(u);
-        int parent2 = Find(v);
-        if (parent1 != parent2){
-            --number_connected_components;
-            if (ranges[parent1] >= ranges[parent2]){
-                parents[parent2] = parent1;
-                connected_component_size[parent1] += connected_component_size[parent2];
-                if (ranges[parent1] == ranges[parent2]) ++ranges[parent1];
-            }
-            else {
-                parents[parent1] = parent2;
-                connected_component_size[parent2] += connected_component_size[parent1];
-            }
-        }
-    }
-
-    int Find(int v){
-        if (parents[v] == v) return v;
-        else {
-            parents[v] = Find(parents[v]);
-            return parents[v];
-        }
+    T CompSize(T u){
+        return -dsu[Find(u)];
     }
 };

@@ -1,55 +1,44 @@
 #include <bits/stdc++.h>
-
-typedef __int128_t int128;
-typedef __uint128_t uint128;
-
 using namespace std;
 
-int128 StringToInt128(string &s){
-    int128 number = 0;
-    int sign = 1, i = 0;
-    if (s[0] == '-'){
-        sign = -1;
-        i = 1;
+// Time complexity O(s)
+// Space complexity O(1)
+template<typename T>
+T StringToInt128(const string &s) {
+    T number = 0;
+    size_t i = 0;
+    bool neg = false;
+    if (is_signed_v<T>){
+        if (s[0] == '-'){
+            neg = true;
+            i = 1;
+        }
     }
-    for (; i < (int)s.size(); ++i){
+    for (; i < s.size(); ++i){
         number = number * 10 + (s[i] - '0');
     }
-    return number * sign;
-}
-
-string Int128ToString(int128 number){
-    if (number == 0) return "0";
-    string s = "";
-    bool negative = false;
-    if (number < 0){
-        negative = true;
-        number = -number;
-    }
-    while (number > 0){
-        s += '0' + (number % 10);
-        number /= 10;
-    }
-    if (negative) s += '-';
-    reverse(s.begin(), s.end());
-    return s;
-}
-
-uint128 StringToUInt128(string &s){
-    uint128 number = 0;
-    for (int i = 0; i < (int)s.size(); ++i){
-        number = number * 10 + (s[i] - '0');
-    }
+    if (is_signed_v<T>) return neg? -number : number;
     return number;
 }
 
-string Uint128ToString(uint128 number) {
+// Time complexity O(s)
+// Space complexity O(s)
+template<typename T>
+string Int128ToString(T number) {
     if (number == 0) return "0";
-    string s = "";
+    bool neg = false;
+    if (is_signed_v<T>){
+        if (number < 0){
+            neg = true;
+            number = -number;
+        }
+    }
+    string s;
     while (number > 0) {
-        s += '0' + (number % 10);
+        s.push_back('0' + number % 10);
         number /= 10;
     }
+    if (neg) s.push_back('-');
     reverse(s.begin(), s.end());
     return s;
 }

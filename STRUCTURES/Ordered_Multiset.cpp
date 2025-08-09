@@ -1,29 +1,31 @@
 #include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
-template<class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
+template<class T> using OrderedSet = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
 
+// Time complexity O(log n)
+// Space complexity O(n)
 template <class T>
-struct ordered_multiset {
-  ordered_set<pair<T, int>> os;
+struct OrderedMultiset {
+  OrderedSet<pair<T, int>> ordered_set;
   map<T, int> mp;
 
   void insert(T x) {
-    os.insert(make_pair(x, ++mp[x]));
+    ordered_set.insert({x, ++mp[x]});
   }
   void erase(T x) {
-    os.erase(make_pair(x, mp[x]--));
+    ordered_set.erase({x, --mp[x]});
   }
   int order_of_key(T x) {
-    return os.order_of_key(make_pair(x, 0));
+    return ordered_set.order_of_key({x, 0});
   }
   T find_by_order(int idx) {
-     return (*os.find_by_order(idx)).first;
+    return (*ordered_set.find_by_order(idx)).first;
   }
   int count(T x) {
     return mp[x];
   }
 
-  int size() { return (int)os.size(); }
-  bool empty() { return os.empty(); }
-  void clear() { os.clear(); }
+  int size() { return (int)ordered_set.size(); }
+  bool empty() { return ordered_set.empty(); }
+  void clear() { ordered_set.clear(); mp.clear()}
 };
